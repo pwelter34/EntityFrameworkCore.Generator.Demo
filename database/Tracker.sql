@@ -12,15 +12,15 @@ GO
 -- Tables
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Audit]') AND type in (N'U'))
 CREATE TABLE [dbo].[Audit] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [Date] datetime NOT NULL,
-    [UserId] int NULL,
-    [TaskId] int NULL,
+    [UserId] uniqueidentifier NULL,
+    [TaskId] uniqueidentifier NULL,
     [Content] nvarchar(MAX) NOT NULL,
     [Username] nvarchar(50) NOT NULL,
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_Audit] PRIMARY KEY ([Id])
@@ -28,14 +28,14 @@ CREATE TABLE [dbo].[Audit] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Priority]') AND type in (N'U'))
 CREATE TABLE [dbo].[Priority] (
-    [Id] int NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [Name] nvarchar(100) NOT NULL,
     [Description] nvarchar(255) NULL,
     [DisplayOrder] int NOT NULL DEFAULT (0),
     [IsActive] bit NOT NULL DEFAULT (1),
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_Priority] PRIMARY KEY ([Id])
@@ -43,12 +43,12 @@ CREATE TABLE [dbo].[Priority] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Role]') AND type in (N'U'))
 CREATE TABLE [dbo].[Role] (
-    [Id] uniqueidentifier NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [Name] nvarchar(256) NOT NULL,
     [Description] nvarchar(MAX) NULL,
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_Role] PRIMARY KEY ([Id])
@@ -56,14 +56,14 @@ CREATE TABLE [dbo].[Role] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Status]') AND type in (N'U'))
 CREATE TABLE [dbo].[Status] (
-    [Id] int NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [Name] nvarchar(100) NOT NULL,
     [Description] nvarchar(255) NULL,
     [DisplayOrder] int NOT NULL DEFAULT (0),
     [IsActive] bit NOT NULL DEFAULT (1),
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_Status] PRIMARY KEY ([Id])
@@ -71,18 +71,18 @@ CREATE TABLE [dbo].[Status] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Task]') AND type in (N'U'))
 CREATE TABLE [dbo].[Task] (
-    [Id] uniqueidentifier NOT NULL,
-    [StatusId] int NOT NULL,
-    [PriorityId] int NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
+    [StatusId] uniqueidentifier NOT NULL,
+    [PriorityId] uniqueidentifier NULL,
     [Title] nvarchar(255) NOT NULL,
     [Description] nvarchar(MAX) NULL,
     [StartDate] datetimeoffset NULL,
     [DueDate] datetimeoffset NULL,
     [CompleteDate] datetimeoffset NULL,
     [AssignedId] uniqueidentifier NULL,
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_Task] PRIMARY KEY ([Id])
@@ -94,9 +94,9 @@ CREATE TABLE [dbo].[TaskExtended] (
     [UserAgent] nvarchar(MAX) NULL,
     [Browser] nvarchar(256) NULL,
     [OperatingSystem] nvarchar(256) NULL,
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_TaskExtended] PRIMARY KEY ([TaskId])
@@ -104,7 +104,7 @@ CREATE TABLE [dbo].[TaskExtended] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[User]') AND type in (N'U'))
 CREATE TABLE [dbo].[User] (
-    [Id] uniqueidentifier NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [EmailAddress] nvarchar(256) NOT NULL,
     [IsEmailAddressConfirmed] bit NOT NULL DEFAULT (0),
     [DisplayName] nvarchar(256) NOT NULL,
@@ -116,9 +116,9 @@ CREATE TABLE [dbo].[User] (
     [LockoutEnd] datetimeoffset NULL,
     [LastLogin] datetimeoffset NULL,
     [IsDeleted] bit NOT NULL DEFAULT (0),
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_User] PRIMARY KEY ([Id])
@@ -126,7 +126,7 @@ CREATE TABLE [dbo].[User] (
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UserLogin]') AND type in (N'U'))
 CREATE TABLE [dbo].[UserLogin] (
-    [Id] uniqueidentifier NOT NULL,
+    [Id] uniqueidentifier NOT NULL DEFAULT (NEWSEQUENTIALID()),
     [EmailAddress] nvarchar(256) NOT NULL,
     [UserId] uniqueidentifier NULL,
     [UserAgent] nvarchar(MAX) NULL,
@@ -138,9 +138,9 @@ CREATE TABLE [dbo].[UserLogin] (
     [IpAddress] nvarchar(50) NULL,
     [IsSuccessful] bit NOT NULL DEFAULT (0),
     [FailureMessage] nvarchar(256) NULL,
-    [Created] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Created] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [CreatedBy] nvarchar(100) NULL,
-    [Updated] datetimeoffset NOT NULL DEFAULT (sysutcdatetime()),
+    [Updated] datetimeoffset NOT NULL DEFAULT (SYSUTCDATETIME()),
     [UpdatedBy] nvarchar(100) NULL,
     [RowVersion] rowversion NOT NULL,
     CONSTRAINT [PK_UserLogin] PRIMARY KEY ([Id])
@@ -220,9 +220,9 @@ MERGE INTO [dbo].[Priority] AS t
 USING 
 (
     VALUES
-    (1, 'High', 'High Priority', 1, 1), 
-    (2, 'Normal', 'Normal Priority', 2, 1), 
-    (3, 'Low', 'Low Priority', 3, 1)
+    ('DBF0E04F-04FB-E811-AA64-1E872CB6CB93', 'High', 'High Priority', 1, 1), 
+    ('DCF0E04F-04FB-E811-AA64-1E872CB6CB93', 'Normal', 'Normal Priority', 2, 1), 
+    ('784C7657-04FB-E811-AA64-1E872CB6CB93', 'Low', 'Low Priority', 3, 1)
 ) 
 AS s
 ([Id], [Name], [Description], [DisplayOrder], [IsActive])
@@ -240,12 +240,12 @@ MERGE INTO [dbo].[Status] AS t
 USING 
 (
     VALUES
-    (1, 'Not Started', 'Not Starated', 1, 1), 
-    (2, 'In Progress', 'In Progress', 2, 1), 
-    (3, 'Completed', 'Completed', 3, 1), 
-    (4, 'Blocked', 'Blocked', 4, 1), 
-    (5, 'Deferred', 'Deferred', 5, 1), 
-    (6, 'Done', 'Done', 6, 1)
+    ('CE002CD8-04FB-E811-AA64-1E872CB6CB93', 'Not Started', 'Not Starated', 1, 1), 
+    ('CF002CD8-04FB-E811-AA64-1E872CB6CB93', 'In Progress', 'In Progress', 2, 1), 
+    ('D0002CD8-04FB-E811-AA64-1E872CB6CB93', 'Completed', 'Completed', 3, 1), 
+    ('D1002CD8-04FB-E811-AA64-1E872CB6CB93', 'Blocked', 'Blocked', 4, 1), 
+    ('D2002CD8-04FB-E811-AA64-1E872CB6CB93', 'Deferred', 'Deferred', 5, 1), 
+    ('D3002CD8-04FB-E811-AA64-1E872CB6CB93', 'Done', 'Done', 6, 1)
 ) 
 AS s
 ([Id], [Name], [Description], [DisplayOrder], [IsActive])
