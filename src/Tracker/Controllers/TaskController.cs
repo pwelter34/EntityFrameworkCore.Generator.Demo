@@ -37,7 +37,7 @@ namespace Tracker.Controllers
         [HttpPost("")]
         public async Task<ActionResult<TaskReadModel>> Create(CancellationToken cancellationToken, TaskCreateModel createModel)
         {
-            var readModel = await CreateModel(createModel, cancellationToken).ConfigureAwait(false);
+            var readModel = await CreateModel(createModel, cancellationToken);
 
             return readModel;
         }
@@ -45,7 +45,7 @@ namespace Tracker.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<TaskReadModel>> Update(CancellationToken cancellationToken, Guid id, TaskUpdateModel updateModel)
         {
-            var readModel = await UpdateModel(id, updateModel, cancellationToken).ConfigureAwait(false);
+            var readModel = await UpdateModel(id, updateModel, cancellationToken);
             if (readModel == null)
                 return NotFound();
 
@@ -55,7 +55,7 @@ namespace Tracker.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TaskReadModel>> Delete(CancellationToken cancellationToken, Guid id)
         {
-            var readModel = await DeleteModel(id, cancellationToken).ConfigureAwait(false);
+            var readModel = await DeleteModel(id, cancellationToken);
             if (readModel == null)
                 return NotFound();
 
